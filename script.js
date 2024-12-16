@@ -5,45 +5,31 @@ const navLinks = document.getElementById('nav-links');
 hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('show');
 });
-let slideIndex = 1;
-showSlides(slideIndex);
 
-// Function to increment or decrement the slide index
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
 
-// Function to select the current slide
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
+const slides = document.getElementById('slides');
+  const nextButton = document.getElementById('next');
+  const prevButton = document.getElementById('prev');
 
-// Function to show the current slide
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  if (n > slides.length) {slideIndex = 1}    
-  if (n < 1) {slideIndex = slides.length}
-  
-  // Hide all slides
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
+  let currentIndex = 0;
+  const totalSlides = document.querySelectorAll('.slide').length;
+
+  function showSlide(index) {
+    slides.style.transform = `translateX(-${index * 100}%)`;
   }
 
-  // Remove the "active" class from all dots
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    showSlide(currentIndex);
   }
 
-  // Show the current slide
-  slides[slideIndex-1].style.display = "block";  
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    showSlide(currentIndex);
+  }
 
-  // Add the "active" class to the current dot
-  dots[slideIndex-1].className += " active";
-}
+  nextButton.addEventListener('click', nextSlide);
+  prevButton.addEventListener('click', prevSlide);
 
-// Auto slide every 3 seconds
-setInterval(function() {
-  plusSlides(1);
-}, 5000);
+  // Auto-slide functionality
+  setInterval(nextSlide, 3000);
